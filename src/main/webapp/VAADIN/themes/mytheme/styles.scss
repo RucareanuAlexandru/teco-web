@@ -1,0 +1,56 @@
+@import "mytheme.scss";
+@import "addons.scss";
+@import "../valo/valo";
+
+// This file prefixes all rules with the theme name to avoid causing conflicts with other themes.
+// The actual styles should be defined in mytheme.scss
+
+.mytheme {
+  @include addons;
+  @include mytheme;
+  @include valo;
+}
+
+.userLabel {
+    width: 80px;
+    text-align: center;
+}
+
+.centeredLayout {
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
+}
+
+.width-100 {
+    width: 100%;
+}
+.width-15 {
+    width: 15%;
+}
+
+.centeredText {
+    text-align: center;
+}
+
+.v-accordion-item-caption .v-caption {
+    text-align: center;
+}
+
+.v-accordion-item-caption {
+    background-color: green;
+}
+
+.v-accordion-item-open .v-accordion-item-caption{
+    background-color: blueviolet;
+}
+
+.osForm {
+    margin: 0;
+    padding: 0;
+}
+
+.tabsheet {
+    width: 100%;
+    overflow-y: visible;
+}

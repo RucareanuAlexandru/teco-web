@@ -1,0 +1,1 @@
+$wnd.com_mycompany_test_vaadin_MyAppWidgetset.runAsyncCallback2('Nhb(1626,1,n3d);_.Wd=function Djc(){a4b((!V3b&&(V3b=new f4b),V3b),this.a.d)};mYd(Cl)(2);\n//# sourceURL=com.mycompany.test.vaadin.MyAppWidgetset-2.js\n')
