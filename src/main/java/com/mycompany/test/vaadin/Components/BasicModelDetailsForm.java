@@ -33,6 +33,11 @@ public class BasicModelDetailsForm extends FormLayout {
         modelName.addValidator(new BeanValidator(Models.class, "modelName"));
         
         os.setNullSelectionAllowed(false);
+        disableValidation();
+        addComponent(modelId);
+        addComponent(brandName);
+        addComponent(modelName);
+        addComponent(os);
     }
     
     public void enableValidation() {

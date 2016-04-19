@@ -5,21 +5,22 @@
  */
 package com.mycompany.test.vaadin.Views;
 
+import com.mycompany.test.vaadin.Components.ModelDetailsPopup;
 import com.mycompany.test.vaadin.Entities.Models;
 import com.mycompany.test.vaadin.Facades.ModelsFacade;
+import com.mycompany.test.vaadin.Facades.OsFacade;
 import com.mycompany.test.vaadin.UI.TecoMainUi;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.event.FieldEvents;
+import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.HeaderCell;
 import com.vaadin.ui.Grid.HeaderRow;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import javax.annotation.PostConstruct;
@@ -37,12 +38,16 @@ public class HomeView extends CustomComponent implements View {
     @Inject
     private ModelsFacade modelService;
     
+    @Inject 
+    private OsFacade osService;
+    
     private BeanItemContainer<Models> modelsContainer;
     private Grid modelsGrid;
+    private TecoMainUi main;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        TecoMainUi main = (TecoMainUi)getUI();
+        main = (TecoMainUi)getUI();
         main.getAppLayout().getComponent(0).setVisible(true);
     }
     
@@ -75,6 +80,17 @@ public class HomeView extends CustomComponent implements View {
         modelsGrid.setWidth(72, Unit.PERCENTAGE);
         
         modelsGrid.setColumnOrder("modelId", "brandName", "modelName", "os");
+        
+        modelsGrid.addSelectionListener(new SelectionEvent.SelectionListener() {
+            @Override
+            public void select(SelectionEvent event) {
+                Models selecteModel = (Models)modelsGrid.getSelectedRow();
+                
+                ModelDetailsPopup popup = new ModelDetailsPopup(selecteModel, osService.findAll());
+                
+                main.getUI().addWindow(popup);
+            }
+        });
         
         HeaderRow header = modelsGrid.appendHeaderRow();
         HeaderCell brandCell = header.getCell("brandName");

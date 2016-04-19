@@ -159,7 +159,7 @@ public class Models implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.test.vaadin.Entities.Models[ modelId=" + modelId + " ]";
+        return brandName + " " + modelName;
     }
     
 }
