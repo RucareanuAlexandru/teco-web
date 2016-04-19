@@ -125,7 +125,7 @@ public class Os implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.test.vaadin.Entities.Os[ id=" + id + " ]";
+        return os + " " + version;
     }
     
 }

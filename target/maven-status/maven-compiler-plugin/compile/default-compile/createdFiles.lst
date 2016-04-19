@@ -23,6 +23,7 @@ com\mycompany\test\vaadin\Entities\ProjectsForm.class
 com\mycompany\test\vaadin\Entities\ModelProperties.class
 com\mycompany\test\vaadin\Facades\TecoReportParametersFacade.class
 com\mycompany\test\vaadin\Entities\BehaviourReasons.class
+com\mycompany\test\vaadin\Views\HomeView$1.class
 com\mycompany\test\vaadin\Views\OsView$1.class
 com\mycompany\test\vaadin\Entities\PhoneTypeProperties.class
 com\mycompany\test\vaadin\Components\AddProjectComponent.class
@@ -59,6 +60,7 @@ com\mycompany\test\vaadin\Views\HomeView.class
 com\mycompany\test\vaadin\Services\PhoneTypesService.class
 com\mycompany\test\vaadin\Facades\AbstractFacade.class
 com\mycompany\test\vaadin\Entities\Os.class
+com\mycompany\test\vaadin\Views\HomeView$2.class
 com\mycompany\test\vaadin\Views\ReportsView.class
 com\mycompany\test\vaadin\Entities\Projects.class
 com\mycompany\test\vaadin\Entities\Tacs_.class
