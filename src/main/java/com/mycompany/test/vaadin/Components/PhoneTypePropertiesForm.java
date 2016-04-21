@@ -8,7 +8,6 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.TextField;
 import java.util.List;
-import javax.enterprise.inject.Model;
 import org.vaadin.maddon.fields.MTextField;
 
 

@@ -6,9 +6,11 @@
 package com.mycompany.test.vaadin.Facades;
 
 import com.mycompany.test.vaadin.Entities.Tacs;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +29,17 @@ public class TacsFacade extends AbstractFacade<Tacs> {
 
     public TacsFacade() {
         super(Tacs.class);
+    }
+    
+    public Tacs findTacByTac(String tac) {
+        Query query = em.createNamedQuery("Tacs.findByTac")
+                .setParameter("tac", tac);
+        List<Tacs> results = query.getResultList();
+        
+        if (results != null && !results.isEmpty()) {
+            return results.get(0);
+        }
+        return null;
     }
     
 }

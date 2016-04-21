@@ -35,7 +35,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Models.findAll", query = "SELECT m FROM Models m"),
     @NamedQuery(name = "Models.findByModelId", query = "SELECT m FROM Models m WHERE m.modelId = :modelId"),
     @NamedQuery(name = "Models.findByBrandName", query = "SELECT m FROM Models m WHERE m.brandName = :brandName"),
-    @NamedQuery(name = "Models.findByModelName", query = "SELECT m FROM Models m WHERE m.modelName = :modelName")})
+    @NamedQuery(name = "Models.findByModelName", query = "SELECT m FROM Models m WHERE m.modelName = :modelName"),
+    @NamedQuery(name = "Models.loadLazyCollectionForModel", 
+            query = "SELECT m FROM Models m "
+                    + "LEFT JOIN FETCH m.behavioursList "
+                    + "LEFT JOIN FETCH m.modelPropertiesList "
+                    + "LEFT JOIN FETCH m.tacsList "
+                    + "WHERE m.modelId = :modelId")})
 public class Models implements Serializable {
 
     private static final long serialVersionUID = 1L;

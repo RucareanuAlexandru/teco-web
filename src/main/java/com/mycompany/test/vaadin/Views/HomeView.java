@@ -7,8 +7,11 @@ package com.mycompany.test.vaadin.Views;
 
 import com.mycompany.test.vaadin.Components.ModelDetailsPopup;
 import com.mycompany.test.vaadin.Entities.Models;
+import com.mycompany.test.vaadin.Facades.ModelPropertiesFacade;
 import com.mycompany.test.vaadin.Facades.ModelsFacade;
 import com.mycompany.test.vaadin.Facades.OsFacade;
+import com.mycompany.test.vaadin.Facades.PhoneTypesFacade;
+import com.mycompany.test.vaadin.Facades.TacsFacade;
 import com.mycompany.test.vaadin.UI.TecoMainUi;
 import com.vaadin.cdi.CDIView;
 import com.vaadin.data.util.BeanItemContainer;
@@ -38,8 +41,19 @@ public class HomeView extends CustomComponent implements View {
     @Inject
     private ModelsFacade modelService;
     
-    @Inject 
+    @Inject
     private OsFacade osService;
+    
+    @Inject
+    private TacsFacade tacsService;
+    
+    @Inject
+    private PhoneTypesFacade phoneTypesService;
+    
+    @Inject
+    private ModelPropertiesFacade modelPropertiesService;
+
+    private ModelDetailsPopup modelDetailsPopup;
     
     private BeanItemContainer<Models> modelsContainer;
     private Grid modelsGrid;
@@ -49,10 +63,14 @@ public class HomeView extends CustomComponent implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         main = (TecoMainUi)getUI();
         main.getAppLayout().getComponent(0).setVisible(true);
+        init();
     }
     
     @PostConstruct
     public void init() {
+        modelDetailsPopup = new ModelDetailsPopup(osService, tacsService,
+                modelPropertiesService, phoneTypesService);
+        
         buildModelsContainer();
         buildModelsGrid();
         buildLayout();
@@ -85,10 +103,11 @@ public class HomeView extends CustomComponent implements View {
             @Override
             public void select(SelectionEvent event) {
                 Models selecteModel = (Models)modelsGrid.getSelectedRow();
+                selecteModel = modelService.loadLazyCollectionForModel(selecteModel.getModelId());
                 
-                ModelDetailsPopup popup = new ModelDetailsPopup(selecteModel, osService.findAll());
+                modelDetailsPopup.buildFromModel(selecteModel);
                 
-                main.getUI().addWindow(popup);
+                main.getUI().addWindow(modelDetailsPopup);
             }
         });
         

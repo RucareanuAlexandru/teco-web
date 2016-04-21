@@ -6,9 +6,11 @@
 package com.mycompany.test.vaadin.Facades;
 
 import com.mycompany.test.vaadin.Entities.Models;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +29,22 @@ public class ModelsFacade extends AbstractFacade<Models> {
 
     public ModelsFacade() {
         super(Models.class);
+    }
+    
+    @Override
+    public List<Models> findAll() {
+        Query query = em.createNamedQuery("Models.findAll");
+        return query.getResultList();
+    }
+    
+    public Models loadLazyCollectionForModel(String modelId) {
+        Query query = em.createNamedQuery("Models.loadLazyCollectionForModel")
+                .setParameter("modelId", modelId);
+        List<Models> results = query.getResultList();
+        if (results != null && !results.isEmpty()) {
+            return results.get(0);
+        }
+        return null;
     }
     
 }
