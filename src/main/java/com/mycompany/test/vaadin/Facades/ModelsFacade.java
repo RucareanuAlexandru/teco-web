@@ -8,9 +8,13 @@ package com.mycompany.test.vaadin.Facades;
 import com.mycompany.test.vaadin.Entities.Models;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.eclipse.persistence.config.CacheUsage;
+import org.eclipse.persistence.config.QueryHints;
 
 /**
  *
@@ -31,15 +35,11 @@ public class ModelsFacade extends AbstractFacade<Models> {
         super(Models.class);
     }
     
-    @Override
-    public List<Models> findAll() {
-        Query query = em.createNamedQuery("Models.findAll");
-        return query.getResultList();
-    }
-    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Models loadLazyCollectionForModel(String modelId) {
         Query query = em.createNamedQuery("Models.loadLazyCollectionForModel")
                 .setParameter("modelId", modelId);
+        query.setHint(QueryHints.CACHE_USAGE, CacheUsage.DoNotCheckCache);
         List<Models> results = query.getResultList();
         if (results != null && !results.isEmpty()) {
             return results.get(0);

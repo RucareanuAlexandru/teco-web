@@ -51,4 +51,12 @@ public class ProjectsActionsFacade extends AbstractFacade<ProjectsActions> {
         return null;
     }
     
+    public List<ProjectsActions> findByProjectAndActionType(Projects project, String type) {
+        Query query = em.createNamedQuery("ProjectsActions.findByProjectAndActionType")
+                .setParameter("project", project)
+                .setParameter("actionType", type);
+        
+        return query.getResultList();
+    }
+    
 }

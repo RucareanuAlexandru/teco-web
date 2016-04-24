@@ -38,7 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT pa.action FROM ProjectsActions pa WHERE pa.project = :project "
                     + "and pa.action.type =:type"),
     @NamedQuery(name = "ProjectsActions.findByProjectAndAction", 
-            query = "SELECT pa FROM ProjectsActions pa WHERE pa.project = :project AND pa.action = :action")})
+            query = "SELECT pa FROM ProjectsActions pa WHERE pa.project = :project AND pa.action = :action"),
+    @NamedQuery(name = "ProjectsActions.findByProjectAndActionType", 
+            query = "SELECT pa FROM ProjectsActions pa WHERE pa.project = :project AND pa.action.type = :actionType")})
 public class ProjectsActions implements Serializable {
 
     private static final long serialVersionUID = 1L;

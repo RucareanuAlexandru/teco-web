@@ -7,10 +7,15 @@ package com.mycompany.test.vaadin.Views;
 
 import com.mycompany.test.vaadin.Components.ModelDetailsPopup;
 import com.mycompany.test.vaadin.Entities.Models;
+import com.mycompany.test.vaadin.Facades.BehaviourReasonsFacade;
+import com.mycompany.test.vaadin.Facades.BehavioursFacade;
 import com.mycompany.test.vaadin.Facades.ModelPropertiesFacade;
 import com.mycompany.test.vaadin.Facades.ModelsFacade;
 import com.mycompany.test.vaadin.Facades.OsFacade;
+import com.mycompany.test.vaadin.Facades.PhoneTypePropertiesFacade;
 import com.mycompany.test.vaadin.Facades.PhoneTypesFacade;
+import com.mycompany.test.vaadin.Facades.ProjectsActionsFacade;
+import com.mycompany.test.vaadin.Facades.ProjectsFacade;
 import com.mycompany.test.vaadin.Facades.TacsFacade;
 import com.mycompany.test.vaadin.UI.TecoMainUi;
 import com.vaadin.cdi.CDIView;
@@ -27,6 +32,8 @@ import com.vaadin.ui.Grid.HeaderRow;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import javax.annotation.PostConstruct;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 /**
@@ -34,6 +41,7 @@ import javax.inject.Inject;
  * @author alex
  */
 @CDIView("home")
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class HomeView extends CustomComponent implements View {
 
     public static final String NAME = "home"; 
@@ -52,6 +60,21 @@ public class HomeView extends CustomComponent implements View {
     
     @Inject
     private ModelPropertiesFacade modelPropertiesService;
+    
+    @Inject
+    private PhoneTypePropertiesFacade phoneTypePropertiesService;
+    
+    @Inject
+    private ProjectsActionsFacade projectsActionsService;
+    
+    @Inject
+    private BehavioursFacade behavioursService;
+    
+    @Inject
+    private BehaviourReasonsFacade behaviourReasonsService;
+    
+    @Inject
+    private ProjectsFacade projectsService;
 
     private ModelDetailsPopup modelDetailsPopup;
     
@@ -69,7 +92,9 @@ public class HomeView extends CustomComponent implements View {
     @PostConstruct
     public void init() {
         modelDetailsPopup = new ModelDetailsPopup(osService, tacsService,
-                modelPropertiesService, phoneTypesService);
+                modelPropertiesService, phoneTypesService, phoneTypePropertiesService,
+                projectsActionsService, behavioursService, behaviourReasonsService, 
+                projectsService);
         
         buildModelsContainer();
         buildModelsGrid();

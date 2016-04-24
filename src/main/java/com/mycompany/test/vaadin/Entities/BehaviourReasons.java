@@ -110,7 +110,7 @@ public class BehaviourReasons implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.test.vaadin.Entities.BehaviourReasons[ id=" + id + " ]";
+        return reasonDescription;
     }
     
 }

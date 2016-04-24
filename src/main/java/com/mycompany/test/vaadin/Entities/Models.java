@@ -6,7 +6,7 @@
 package com.mycompany.test.vaadin.Entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -65,11 +65,11 @@ public class Models implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Os os;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "model", fetch = FetchType.LAZY)
-    private List<Tacs> tacsList;
+    private Set<Tacs> tacsList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "model", fetch = FetchType.LAZY)
-    private List<ModelProperties> modelPropertiesList;
+    private Set<ModelProperties> modelPropertiesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "model", fetch = FetchType.LAZY)
-    private List<Behaviours> behavioursList;
+    private Set<Behaviours> behavioursList;
 
     public Models() {
     }
@@ -117,29 +117,29 @@ public class Models implements Serializable {
     }
 
     @XmlTransient
-    public List<Tacs> getTacsList() {
+    public Set<Tacs> getTacsList() {
         return tacsList;
     }
 
-    public void setTacsList(List<Tacs> tacsList) {
+    public void setTacsList(Set<Tacs> tacsList) {
         this.tacsList = tacsList;
     }
 
     @XmlTransient
-    public List<ModelProperties> getModelPropertiesList() {
+    public Set<ModelProperties> getModelPropertiesList() {
         return modelPropertiesList;
     }
 
-    public void setModelPropertiesList(List<ModelProperties> modelPropertiesList) {
+    public void setModelPropertiesList(Set<ModelProperties> modelPropertiesList) {
         this.modelPropertiesList = modelPropertiesList;
     }
 
     @XmlTransient
-    public List<Behaviours> getBehavioursList() {
+    public Set<Behaviours> getBehavioursList() {
         return behavioursList;
     }
 
-    public void setBehavioursList(List<Behaviours> behavioursList) {
+    public void setBehavioursList(Set<Behaviours> behavioursList) {
         this.behavioursList = behavioursList;
     }
 

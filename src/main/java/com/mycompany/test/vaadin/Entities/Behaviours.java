@@ -31,7 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Behaviours.findAll", query = "SELECT b FROM Behaviours b"),
     @NamedQuery(name = "Behaviours.findById", query = "SELECT b FROM Behaviours b WHERE b.id = :id"),
-    @NamedQuery(name = "Behaviours.findByPropertyValue", query = "SELECT b FROM Behaviours b WHERE b.propertyValue = :propertyValue")})
+    @NamedQuery(name = "Behaviours.findByPropertyValue", query = "SELECT b FROM Behaviours b WHERE b.propertyValue = :propertyValue"),
+    @NamedQuery(name = "Behaviours.findByModelAndProjectActionProperty",
+            query = "SELECT b FROM Behaviours b WHERE b.model = :model AND b.projectActionProperty = :projectActionProperty")})
 public class Behaviours implements Serializable {
 
     private static final long serialVersionUID = 1L;

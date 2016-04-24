@@ -29,7 +29,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ModelProperties.findAll", query = "SELECT m FROM ModelProperties m"),
-    @NamedQuery(name = "ModelProperties.findById", query = "SELECT m FROM ModelProperties m WHERE m.id = :id")})
+    @NamedQuery(name = "ModelProperties.findById", query = "SELECT m FROM ModelProperties m WHERE m.id = :id"),
+    @NamedQuery(name = "ModelProperties.findByModelAndProperty",
+            query = "SELECT m FROM ModelProperties m WHERE m.model = :model AND m.property = :property")})
 public class ModelProperties implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -6,6 +6,7 @@
 package com.mycompany.test.vaadin.Components;
 
 import com.mycompany.test.vaadin.Entities.PhoneTypes;
+import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.VerticalLayout;
@@ -24,23 +25,30 @@ public class ModelTypeForm extends AbstractVerticalForm {
     private NativeSelect propertyName = new NativeSelect("Property name");
 
     public ModelTypeForm() {
-        propertyName.setNullSelectionAllowed(false);
-        
+        propertyName.setNullSelectionAllowed(false); 
+        category.setNullSelectionAllowed(false);
         
         addComponent(clearSelectionButton);
-        addComponent(propertyName);
         addComponent(category);
+        addComponent(propertyName);
         addComponent(saveRemoceHl);
     }
 
     public void buildProperties(List<String> properties) {
-        propertyName.clear();
+        propertyName.removeAllItems();
         propertyName.addItems(properties);
+        if (properties != null && !properties.isEmpty()) {
+            propertyName.select(properties.get(0));
+        }
     }
     
     public void buildCategories(List<PhoneTypes> types) {
-        category.clear();
+        category.removeAllItems();
         category.addItems(types);
+        if (types != null && !types.isEmpty()) {
+            category.select(types.get(0));
+                    
+        }
     }
     
     public void disableCategory() {
@@ -49,5 +57,9 @@ public class ModelTypeForm extends AbstractVerticalForm {
     
     public void enableCategory() {
         category.setEnabled(true);
+    }
+    
+    public void addCategorySelectListener(Property.ValueChangeListener valueChangeListener) {
+        category.addValueChangeListener(valueChangeListener);
     }
 }

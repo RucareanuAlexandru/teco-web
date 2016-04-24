@@ -3,6 +3,7 @@
   <persistence-unit name="com.mycompany_teco-web_war_1.0-SNAPSHOTPU" transaction-type="JTA">
     <jta-data-source>java:app/jdbc/teco</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <properties/>
   </persistence-unit>
 </persistence>
