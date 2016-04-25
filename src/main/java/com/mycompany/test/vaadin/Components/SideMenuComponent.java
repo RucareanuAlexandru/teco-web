@@ -11,6 +11,7 @@ import com.mycompany.test.vaadin.Views.HomeView;
 import com.mycompany.test.vaadin.Views.OsView;
 import com.mycompany.test.vaadin.Views.PhoneTypesView;
 import com.mycompany.test.vaadin.Views.ProjectsView;
+import com.mycompany.test.vaadin.Views.ReasonsView;
 import com.mycompany.test.vaadin.Views.ReportsView;
 import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Button;
@@ -67,8 +68,12 @@ public class SideMenuComponent extends VerticalLayout {
                 ((TecoMainUi)getUI()).switchView(OsView.NAME);
             }
         });
+        
+        Button reasonsButton = new Button("Reasons", (e) -> {
+            ((TecoMainUi)getUI()).switchView(ReasonsView.NAME);
+        });
 
-        VerticalLayout admin = new VerticalLayout(projButton, actionsButton, typesButton, osButton);
+        VerticalLayout admin = new VerticalLayout(projButton, actionsButton, typesButton, osButton, reasonsButton);
         VerticalLayout user = new VerticalLayout(homeButton, reportsButton);
 
         for (Component component : user) {

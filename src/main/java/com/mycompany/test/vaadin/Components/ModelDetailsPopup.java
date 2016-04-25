@@ -18,6 +18,7 @@ import com.mycompany.test.vaadin.Entities.Tacs;
 import com.mycompany.test.vaadin.Facades.BehaviourReasonsFacade;
 import com.mycompany.test.vaadin.Facades.BehavioursFacade;
 import com.mycompany.test.vaadin.Facades.ModelPropertiesFacade;
+import com.mycompany.test.vaadin.Facades.ModelsFacade;
 import com.mycompany.test.vaadin.Facades.OsFacade;
 import com.mycompany.test.vaadin.Facades.PhoneTypePropertiesFacade;
 import com.mycompany.test.vaadin.Facades.PhoneTypesFacade;
@@ -66,6 +67,7 @@ public class ModelDetailsPopup extends Window {
     private BehavioursFacade behavioursService;
     private BehaviourReasonsFacade behaviourReasonsService;
     private ProjectsFacade projectsService;
+    private ModelsFacade modelsService;
     
     private Models model;
     private final BasicModelDetailsForm basicForm = new BasicModelDetailsForm();
@@ -119,7 +121,7 @@ public class ModelDetailsPopup extends Window {
             ModelPropertiesFacade modelPropertiesService, PhoneTypesFacade phoneTypesService,
             PhoneTypePropertiesFacade phoneTypePropertiesService, ProjectsActionsFacade projectsActionsService, 
             BehavioursFacade behavioursService, BehaviourReasonsFacade behaviourReasonsService, 
-            ProjectsFacade projectsService) {
+            ProjectsFacade projectsService, ModelsFacade modelsService) {
         this.osService = osService;
         this.tacsService = tacsService;
         this.modelPropertiesService = modelPropertiesService;
@@ -129,6 +131,7 @@ public class ModelDetailsPopup extends Window {
         this.behavioursService = behavioursService;
         this.behaviourReasonsService = behaviourReasonsService;
         this.projectsService = projectsService;
+        this.modelsService = modelsService;
         
         configWindow();
     }
@@ -199,8 +202,34 @@ public class ModelDetailsPopup extends Window {
         modelBinder.setItemDataSource(modelItem);
         modelBinder.bindMemberFields(basicForm);
         
+        Button saveButton = new Button(FontAwesome.SAVE);
+        saveButton.addClickListener((e) -> {
+            saveBasicModel();
+        });
+        
         basicContent = new VerticalLayout(basicForm);
         basicContent.setMargin(true);
+    }
+    
+    private void saveBasicModel() {
+        basicForm.enableValidation();
+        try {
+            if (!modelBinder.isValid()) {
+                Notification.show("Values not good", Notification.Type.TRAY_NOTIFICATION);
+            }
+            modelBinder.commit();
+        } catch(FieldGroup.CommitException ce) {
+            return;
+        }
+        
+        BeanItem modelItem = (BeanItem) modelBinder.getItemDataSource();
+        Models m = (Models) modelItem.getBean();
+        
+        if (m != null) {
+            modelsService.edit(m);
+            
+            Notification.show("Model basic's details saved", Notification.Type.TRAY_NOTIFICATION);
+        }
     }
 
     private void setBasicContent() {

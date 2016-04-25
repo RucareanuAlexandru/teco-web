@@ -94,7 +94,7 @@ public class HomeView extends CustomComponent implements View {
         modelDetailsPopup = new ModelDetailsPopup(osService, tacsService,
                 modelPropertiesService, phoneTypesService, phoneTypePropertiesService,
                 projectsActionsService, behavioursService, behaviourReasonsService, 
-                projectsService);
+                projectsService, modelService);
         
         buildModelsContainer();
         buildModelsGrid();

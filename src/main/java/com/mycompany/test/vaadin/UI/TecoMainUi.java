@@ -7,6 +7,7 @@ import com.mycompany.test.vaadin.Views.LoginView;
 import com.mycompany.test.vaadin.Views.OsView;
 import com.mycompany.test.vaadin.Views.PhoneTypesView;
 import com.mycompany.test.vaadin.Views.ProjectsView;
+import com.mycompany.test.vaadin.Views.ReasonsView;
 import com.mycompany.test.vaadin.Views.ReportsView;
 
 import com.vaadin.annotations.Theme;
@@ -103,6 +104,9 @@ public class TecoMainUi extends UI {
                 navigator.navigateTo(view);
                 break;
             case ActionsView.NAME:
+                navigator.navigateTo(view);
+                break;
+            case ReasonsView.NAME:
                 navigator.navigateTo(view);
                 break;
         }        
