@@ -25,10 +25,13 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.HeaderCell;
 import com.vaadin.ui.Grid.HeaderRow;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import javax.annotation.PostConstruct;
@@ -103,7 +106,15 @@ public class HomeView extends CustomComponent implements View {
     
     private void buildLayout() {
         VerticalLayout layout = new VerticalLayout();
-        layout.addComponent(modelsGrid);
+        
+        Button wizardPopupButton = new Button(FontAwesome.PLUS);
+        
+        
+        HorizontalLayout hl = new HorizontalLayout(modelsGrid, wizardPopupButton);
+        hl.setSizeFull();
+        hl.setExpandRatio(modelsGrid, 4);
+        hl.setExpandRatio(wizardPopupButton, 1);
+        layout.addComponent(hl);
         layout.setMargin(true);
         layout.setSizeFull();
         setCompositionRoot(layout);
@@ -120,35 +131,29 @@ public class HomeView extends CustomComponent implements View {
         modelsGrid.removeColumn("modelPropertiesList");
         modelsGrid.removeColumn("behavioursList");
         
-        modelsGrid.setWidth(72, Unit.PERCENTAGE);
+        modelsGrid.setWidth(100, Unit.PERCENTAGE);
         
         modelsGrid.setColumnOrder("modelId", "brandName", "modelName", "os");
         
-        modelsGrid.addSelectionListener(new SelectionEvent.SelectionListener() {
-            @Override
-            public void select(SelectionEvent event) {
-                Models selecteModel = (Models)modelsGrid.getSelectedRow();
-                selecteModel = modelService.loadLazyCollectionForModel(selecteModel.getModelId());
-                
-                modelDetailsPopup.buildFromModel(selecteModel);
-                
-                main.getUI().addWindow(modelDetailsPopup);
-            }
+        modelsGrid.addSelectionListener(e -> {
+            Models selecteModel = (Models)modelsGrid.getSelectedRow();
+            selecteModel = modelService.loadLazyCollectionForModel(selecteModel.getModelId());
+            
+            modelDetailsPopup.buildFromModel(selecteModel);
+            
+            main.getUI().addWindow(modelDetailsPopup);
         });
         
         HeaderRow header = modelsGrid.appendHeaderRow();
         HeaderCell brandCell = header.getCell("brandName");
         
         TextField brandFilter = new TextField();
-        brandFilter.addTextChangeListener(new FieldEvents.TextChangeListener() {
-            @Override
-            public void textChange(FieldEvents.TextChangeEvent event) {
-                modelsContainer.removeContainerFilters("brandName");
-                
-                if (!event.getText().isEmpty()) {
-                    modelsContainer.addContainerFilter(
-                            new SimpleStringFilter("brandName", event.getText(), true, false));
-                }
+        brandFilter.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+            modelsContainer.removeContainerFilters("brandName");
+            
+            if (!event.getText().isEmpty()) {
+                modelsContainer.addContainerFilter(
+                        new SimpleStringFilter("brandName", event.getText(), true, false));
             }
         });
         brandCell.setComponent(brandFilter);
@@ -156,15 +161,12 @@ public class HomeView extends CustomComponent implements View {
         HeaderCell modelCell = header.getCell("modelName");
         
         TextField modelFilter = new TextField();
-        modelFilter.addTextChangeListener(new FieldEvents.TextChangeListener() {
-            @Override
-            public void textChange(FieldEvents.TextChangeEvent event) {
-                modelsContainer.removeContainerFilters("modelName");
-                
-                if (!event.getText().isEmpty()) {
-                    modelsContainer.addContainerFilter(
-                            new SimpleStringFilter("modelName", event.getText(), true, false));
-                }
+        modelFilter.addTextChangeListener((FieldEvents.TextChangeEvent event) -> {
+            modelsContainer.removeContainerFilters("modelName");
+            
+            if (!event.getText().isEmpty()) {
+                modelsContainer.addContainerFilter(
+                        new SimpleStringFilter("modelName", event.getText(), true, false));
             }
         });
         modelCell.setComponent(modelFilter);

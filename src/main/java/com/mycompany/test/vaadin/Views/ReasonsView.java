@@ -17,10 +17,12 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -43,7 +45,7 @@ public class ReasonsView extends CustomComponent implements View {
     
     private TecoMainUi main;
     private List<BehaviourReasons> reasons;
-    private BeanItemContainer<BehaviourReasons> reasonsContaner;
+    private BeanItemContainer<BehaviourReasons> reasonsContainer;
     private Grid reasonsGrid;
     private FieldGroup reasonBinder = new FieldGroup();
     private ReasonsForm reasonsForm = new ReasonsForm();
@@ -57,6 +59,7 @@ public class ReasonsView extends CustomComponent implements View {
     
     @PostConstruct
     public void init() {
+        buildReasonsForm();
         buildReasonsContainer();
         buildReasonsGrid();
         bindNewReason();
@@ -72,14 +75,20 @@ public class ReasonsView extends CustomComponent implements View {
         setCompositionRoot(layout);
     }
     
+    private void buildReasonsForm() {
+        reasonsForm.addSaveListener(this::saveReasonListener);
+        reasonsForm.addDeleteListener(this::deleteReasonListener);
+        reasonsForm.addClearSelectionListener(this::clearReasonSelection);
+    }
+     
     private void buildReasonsContainer() {
         reasons = reasonsService.findAll();
-        reasonsContaner = new BeanItemContainer<>(BehaviourReasons.class, reasons);
+        reasonsContainer = new BeanItemContainer<>(BehaviourReasons.class, reasons);
     }
     
     private void buildReasonsGrid() {
         reasonsGrid = new Grid();
-        reasonsGrid.setContainerDataSource(reasonsContaner);
+        reasonsGrid.setContainerDataSource(reasonsContainer);
         reasonsGrid.removeColumn("behavioursList");
         reasonsGrid.removeColumn("id");
         
@@ -100,6 +109,7 @@ public class ReasonsView extends CustomComponent implements View {
     }
     
     private void bindNewReason() {
+        reasonsForm.disableValidation();
         reasonToAdd = new BehaviourReasons();
         Item item = new BeanItem(reasonToAdd);
         reasonBinder.setItemDataSource(item);
@@ -108,4 +118,63 @@ public class ReasonsView extends CustomComponent implements View {
         reasonsForm.hideDeleteAndClearSelectionButtons();
     }
     
+    private void saveReasonListener(Button.ClickEvent event) {
+        reasonsForm.enablevalidation();
+        try {
+            if (!reasonBinder.isValid()) {
+                Notification.show("Please correct the erros", Notification.Type.ERROR_MESSAGE);
+                return;
+            }
+            reasonBinder.commit();
+        } catch (Exception e) {
+            return;
+        }
+        
+        BeanItem rBean = (BeanItem) reasonBinder.getItemDataSource();
+        BehaviourReasons r = (BehaviourReasons) rBean.getBean();
+        
+        if (r == null) {
+            return;
+        }
+        
+        if (r.getId() == null) {
+            reasonsService.create(r);
+            
+            r = reasonsService.findByDescription(r.getReasonDescription());
+            reasonsContainer.addBean(r);
+            reasonsGrid.setContainerDataSource(reasonsContainer);
+            bindNewReason();
+            
+            Notification.show("reason saved", Notification.Type.TRAY_NOTIFICATION);
+        } else {
+            reasonsService.edit(r);
+            reasonsGrid.setContainerDataSource(reasonsContainer);
+            reasonsGrid.select(null);
+            
+            bindNewReason();
+            
+            Notification.show("reason edited", Notification.Type.TRAY_NOTIFICATION);
+        }
+    }
+    
+    private void deleteReasonListener(Button.ClickEvent event) {
+        BeanItem rBean = (BeanItem) reasonBinder.getItemDataSource();
+        BehaviourReasons r = (BehaviourReasons) rBean.getBean();
+        
+        if (r == null) {
+            return;
+        }
+        
+        reasonsService.remove(r);
+        reasonsContainer.removeItem(r);
+        reasonsGrid.setContainerDataSource(reasonsContainer);
+        bindNewReason();
+        
+        Notification.show("reason deleted", Notification.Type.TRAY_NOTIFICATION);
+    }
+    
+    private void clearReasonSelection(Button.ClickEvent event) {
+        bindNewReason();
+        reasonsGrid.select(null);
+    }
 }

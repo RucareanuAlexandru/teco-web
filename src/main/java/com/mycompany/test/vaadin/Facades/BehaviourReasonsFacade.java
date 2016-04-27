@@ -6,9 +6,11 @@
 package com.mycompany.test.vaadin.Facades;
 
 import com.mycompany.test.vaadin.Entities.BehaviourReasons;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +31,14 @@ public class BehaviourReasonsFacade extends AbstractFacade<BehaviourReasons> {
         super(BehaviourReasons.class);
     }
     
+    public BehaviourReasons findByDescription(String description) {
+        Query query = em.createNamedQuery("BehaviourReasons.findByReasonDescription")
+                .setParameter("reasonDescription", description);
+        List<BehaviourReasons> results = query.getResultList();
+        if (results != null && !results.isEmpty()) {
+            return results.get(0);
+        }
+        
+        return null;
+    }
 }

@@ -8,10 +8,13 @@ package com.mycompany.test.vaadin.Components;
 import com.mycompany.test.vaadin.Entities.Models;
 import com.mycompany.test.vaadin.Entities.Os;
 import com.vaadin.data.validator.BeanValidator;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.TextField;
 import java.util.List;
+import org.vaadin.maddon.button.MButton;
 import org.vaadin.maddon.fields.MTextField;
 
 /**
@@ -20,10 +23,12 @@ import org.vaadin.maddon.fields.MTextField;
  */
 public class BasicModelDetailsForm extends FormLayout {
     
-    private TextField modelId = new MTextField("ModelId");
+    private TextField modelId = new MTextField("Model Id");
     private TextField brandName = new MTextField("Brand name");
     private TextField modelName = new MTextField("Model name");
     private NativeSelect os = new NativeSelect("OS");
+    
+    protected MButton saveButton = new MButton(FontAwesome.SAVE);
     
     public BasicModelDetailsForm() {
         brandName.setNullRepresentation("");
@@ -38,6 +43,7 @@ public class BasicModelDetailsForm extends FormLayout {
         addComponent(brandName);
         addComponent(modelName);
         addComponent(os);
+        addComponent(saveButton);
     }
     
     public void enableValidation() {
@@ -53,5 +59,13 @@ public class BasicModelDetailsForm extends FormLayout {
     public void buildOses(List<Os> oses) {
         os.clear();
         os.addItems(oses);
+    }
+    
+    public void disableModelId() {
+        modelId.setEnabled(false);
+    }
+    
+    public void addSaveListener(Button.ClickListener saveListener) {
+        saveButton.addClickListener(saveListener);
     }
 }

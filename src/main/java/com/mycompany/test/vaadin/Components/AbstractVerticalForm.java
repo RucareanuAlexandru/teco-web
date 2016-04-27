@@ -51,12 +51,4 @@ public abstract class AbstractVerticalForm extends VerticalLayout {
     public void addClearSelectionListener(Button.ClickListener clearListener) {
         clearSelectionButton.addClickListener(clearListener);
     } 
-    
-    public void toggleDeleteButton() {
-        deleteButton.setVisible(!deleteButton.isVisible());
-    }
-    
-    public void toggleClearSelectionButton() {
-        clearSelectionButton.setVisible(!clearSelectionButton.isVisible());
-    }
 }
