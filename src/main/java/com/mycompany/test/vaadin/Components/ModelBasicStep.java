@@ -8,8 +8,6 @@ package com.mycompany.test.vaadin.Components;
 import com.mycompany.test.vaadin.Entities.Models;
 import com.mycompany.test.vaadin.Facades.ModelsFacade;
 import com.mycompany.test.vaadin.Facades.OsFacade;
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import org.vaadin.teemu.wizards.WizardStep;
@@ -39,6 +37,7 @@ public class ModelBasicStep implements WizardStep {
     @Override
     public Component getContent() {
         basicContent = new ModelBasicDetailsContent(model, modelService, osService);
+        basicContent.enableModelId();
         return basicContent;
     }
 

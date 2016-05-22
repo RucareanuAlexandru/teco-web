@@ -42,6 +42,10 @@ public class ModelBasicDetailsContent extends VerticalLayout {
         basicForm.buildOses(osService.findAll());
     }
     
+    public void enableModelId() {
+        basicForm.enableModelId();
+    }
+    
     private void buildBasicContent() {
         Item modelItem = new BeanItem(model);
         modelBinder.setItemDataSource(modelItem);
@@ -72,6 +76,10 @@ public class ModelBasicDetailsContent extends VerticalLayout {
             modelsService.edit(m);
             
             Notification.show("Model basic's details saved", Notification.Type.TRAY_NOTIFICATION);
+        } else {
+            // only for wizard
+            modelsService.create(m);
+            model = modelsService.findModelByModelNameAndBrandName(m.getModelName(), m.getBrandName());
         }
     }
     

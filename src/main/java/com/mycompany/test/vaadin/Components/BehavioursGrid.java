@@ -9,6 +9,7 @@ import com.mycompany.test.vaadin.Entities.BehaviourReasons;
 import com.mycompany.test.vaadin.Entities.Behaviours;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.ObjectProperty;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
@@ -18,6 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import org.jsoup.select.Collector;
 
 /**
  *
@@ -40,6 +43,7 @@ public class BehavioursGrid extends GridLayout {
         buildLayout();
         
         setSizeFull();
+        setColumnExpandRatio(3, 1);
     }
 
     private void buildLayout() {
@@ -56,11 +60,18 @@ public class BehavioursGrid extends GridLayout {
             if (bs == null || bs.isEmpty()) {
                 return;
             }
+            Label actionLabel = new Label(actionName);
+            actionLabel.setSizeUndefined();
+            actionLabel.setStyleName("label-margin");
             
-            addComponent(new Label(actionName), 0, row, 0, row + bs.size() - 1);
+            addComponent(actionLabel, 0, row, 0, row + bs.size() - 1);
+            setComponentAlignment(actionLabel, Alignment.MIDDLE_CENTER);
             for (Behaviours b: bs) {
                 String propertyName = b.getProjectActionProperty().getProperty().getName();
-                addComponent(new Label(propertyName), 1, row);
+                Label propertyLabel = new Label(propertyName);
+                propertyLabel.setSizeUndefined();
+                addComponent(propertyLabel, 1, row);
+                setComponentAlignment(propertyLabel, Alignment.MIDDLE_CENTER);
                 
                 ObjectProperty<String> propValue = new ObjectProperty<>(b.getPropertyValue());                
                 TextField field = new TextField(propValue);
@@ -71,6 +82,7 @@ public class BehavioursGrid extends GridLayout {
                         b.setPropertyValue(value);
                     }
                 });
+                field.setSizeUndefined();
                 addComponent(field, 2, row);
                 
                 NativeSelect ns = new NativeSelect();
@@ -78,7 +90,16 @@ public class BehavioursGrid extends GridLayout {
                 
                 if (b.getReason() != null) {
                     ns.select(b.getReason());
+                } else {
+                    List<BehaviourReasons> defaultList = reasons.stream()
+                            .filter(r -> r.getReasonDescription().equalsIgnoreCase("Default"))
+                            .collect(Collectors.toList());
+                    if (defaultList != null && !defaultList.isEmpty()) {
+                        ns.select(defaultList.get(0));
+                    }
                 }
+                ns.setSizeFull();
+                ns.setNullSelectionAllowed(false);
                 addComponent(ns, 3, row);
                 ns.addValueChangeListener(new Property.ValueChangeListener() {
                     @Override
@@ -100,8 +121,14 @@ public class BehavioursGrid extends GridLayout {
     }
 
     private void buildGridHeader() {
-        addComponent(new Label("Action name"), 0, 0);
-        addComponent(new Label("Property name"), 1, 0);
+        Label actionNameHeader = new Label("Action name");
+        actionNameHeader.setSizeUndefined();
+        actionNameHeader.setStyleName("label-margin");
+        addComponent(actionNameHeader, 0, 0);
+        Label propertyNameHeader = new Label("Property name");
+        propertyNameHeader.setSizeUndefined();
+        propertyNameHeader.setStyleName("label-margin");
+        addComponent(propertyNameHeader, 1, 0);
         addComponent(new Label("Property value"), 2, 0);
         addComponent(new Label("Reason"), 3, 0);
     }

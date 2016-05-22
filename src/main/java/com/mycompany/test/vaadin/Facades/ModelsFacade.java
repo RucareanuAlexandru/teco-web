@@ -35,12 +35,23 @@ public class ModelsFacade extends AbstractFacade<Models> {
         super(Models.class);
     }
     
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Models loadLazyCollectionForModel(String modelId) {
         Query query = em.createNamedQuery("Models.loadLazyCollectionForModel")
                 .setParameter("modelId", modelId);
         query.setHint(QueryHints.CACHE_USAGE, CacheUsage.DoNotCheckCache);
         List<Models> results = query.getResultList();
+        if (results != null && !results.isEmpty()) {
+            return results.get(0);
+        }
+        return null;
+    }
+    
+    public Models findModelByModelNameAndBrandName(String modelName, String brandName) {
+        Query query = em.createNamedQuery("Models.findByModelNameAndBrandName")
+                .setParameter("brandName", brandName)
+                .setParameter("modelName", modelName);
+        List<Models> results = query.getResultList();
+        
         if (results != null && !results.isEmpty()) {
             return results.get(0);
         }

@@ -65,6 +65,10 @@ public class BasicModelDetailsForm extends FormLayout {
         modelId.setEnabled(false);
     }
     
+    public void enableModelId() {
+        modelId.setEnabled(true);
+    }
+    
     public void addSaveListener(Button.ClickListener saveListener) {
         saveButton.addClickListener(saveListener);
     }

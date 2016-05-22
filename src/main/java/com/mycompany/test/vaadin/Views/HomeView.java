@@ -6,6 +6,7 @@
 package com.mycompany.test.vaadin.Views;
 
 import com.mycompany.test.vaadin.Components.ModelDetailsPopup;
+import com.mycompany.test.vaadin.Components.WizardModelPopup;
 import com.mycompany.test.vaadin.Entities.Models;
 import com.mycompany.test.vaadin.Facades.BehaviourReasonsFacade;
 import com.mycompany.test.vaadin.Facades.BehavioursFacade;
@@ -22,7 +23,6 @@ import com.vaadin.cdi.CDIView;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.event.FieldEvents;
-import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
@@ -34,6 +34,7 @@ import com.vaadin.ui.Grid.HeaderRow;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import javax.annotation.PostConstruct;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -84,6 +85,7 @@ public class HomeView extends CustomComponent implements View {
     private BeanItemContainer<Models> modelsContainer;
     private Grid modelsGrid;
     private TecoMainUi main;
+    private Models modelToAdd;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
@@ -108,7 +110,7 @@ public class HomeView extends CustomComponent implements View {
         VerticalLayout layout = new VerticalLayout();
         
         Button wizardPopupButton = new Button(FontAwesome.PLUS);
-        
+        wizardPopupButton.addClickListener(this::wizardPopupListener);
         
         HorizontalLayout hl = new HorizontalLayout(modelsGrid, wizardPopupButton);
         hl.setSizeFull();
@@ -171,6 +173,24 @@ public class HomeView extends CustomComponent implements View {
         });
         modelCell.setComponent(modelFilter);
         
+    }
+    
+    private void wizardPopupListener(Button.ClickEvent event) {
+        modelToAdd = new Models();
+        WizardModelPopup wizardModelPopup = new WizardModelPopup(modelService, osService, tacsService, phoneTypesService,
+                phoneTypePropertiesService, modelPropertiesService, behaviourReasonsService, projectsActionsService,
+                behavioursService, projectsService, modelToAdd);
+        wizardModelPopup.addCloseListener(new Window.CloseListener() {
+            @Override
+            public void windowClose(Window.CloseEvent e) {
+                if (modelToAdd != null) {
+                    modelsContainer.addBean(modelToAdd);
+                    modelsGrid.setContainerDataSource(modelsContainer);
+                }
+            }
+        });
+        
+        main.addWindow(wizardModelPopup);
     }
     
 }

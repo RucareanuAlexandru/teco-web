@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Models.findByModelId", query = "SELECT m FROM Models m WHERE m.modelId = :modelId"),
     @NamedQuery(name = "Models.findByBrandName", query = "SELECT m FROM Models m WHERE m.brandName = :brandName"),
     @NamedQuery(name = "Models.findByModelName", query = "SELECT m FROM Models m WHERE m.modelName = :modelName"),
+    @NamedQuery(name = "Models.findByModelNameAndBrandName", 
+            query = "SELECT m FROM Models m WHERE m.modelName = :modelName AND m.brandName = :brandName"),
     @NamedQuery(name = "Models.loadLazyCollectionForModel", 
             query = "SELECT m FROM Models m "
                     + "LEFT JOIN FETCH m.behavioursList "

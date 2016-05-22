@@ -46,7 +46,8 @@ public class ModelBehavioursContent extends VerticalLayout {
     private NativeSelect projectsSelect;
     private Button saveBehavioursButton;
 
-    public ModelBehavioursContent(BehaviourReasonsFacade behaviourReasonsService, ProjectsActionsFacade projectsActionsService, BehavioursFacade behavioursService, ProjectsFacade projectsService, Models model, StkActionType actionType) {
+    public ModelBehavioursContent(BehaviourReasonsFacade behaviourReasonsService, ProjectsActionsFacade projectsActionsService,
+            BehavioursFacade behavioursService, ProjectsFacade projectsService, Models model, StkActionType actionType) {
         this.behaviourReasonsService = behaviourReasonsService;
         this.projectsActionsService = projectsActionsService;
         this.behavioursService = behavioursService;
@@ -55,6 +56,8 @@ public class ModelBehavioursContent extends VerticalLayout {
         this.actionType = actionType;
         
         buildLayout();
+        setMargin(true);
+        setSpacing(true);
     }
     
     private void buildLayout() {
